@@ -24,6 +24,9 @@
 </template>
 
 <script setup>
+useHead({
+  title: 'Ranobi',
+});
 
 function handleChangeMainText(evt) {
   // autosave
