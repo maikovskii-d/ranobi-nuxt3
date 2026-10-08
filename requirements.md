@@ -54,3 +54,6 @@ Ctrl+Y повторяет отменённое действие.
 В интерфейсе отображается количество символов без пробелов.
 Счётчик располагается в footer.
 footer закреплён в нижней части окна (position: fixed).
+
+Дизайн Figma:
+https://www.figma.com/design/ypTeigBwUWV4bWJoizKopY/Ranobi-Design?t=yKFzGw6rQNpPiHEq-1
