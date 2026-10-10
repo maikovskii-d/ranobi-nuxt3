@@ -1,62 +1,70 @@
 <template>
-  <div>Ranobi</div>
+  <Preloader />
   <div
-    id="main_text"
+    :id="MAIN_TEXT_DIV_ID"
     class="p-2"
     contenteditable
     @input="handleChangeMainText"
   >
-    Загрузка...
   </div>
   <label class="border border-black">
     <span>Загрузить</span>
-    <input id="upload_input" type="file" style="width: 0px" accept=".txt" />
+    <input :id="UPLOAD_INPUT_ID" type="file" style="width: 0px" accept=".txt" />
   </label>
-  <button id="save_file_btn" class="border border-black">
+  <button :id="SAVE_FILE_BTN_ID" class="border border-black">
     Сохранить
   </button>
   <div class="fixed bottom-0">
     С пробелами - 
-    <span id="counter_with_spaces"></span>.
+    <span :id="COUNTER_WITH_SPACES_ID"></span>.
     Без пробелов - 
-    <span id="counter_without_spaces"></span>
+    <span :id="COUNTER_WITHOUT_SPACES_ID"></span>
   </div>
 </template>
 
 <script setup>
+import {
+  APP_NAME,
+  MAIN_TEXT_DIV_ID,
+  UPLOAD_INPUT_ID,
+  SAVE_FILE_BTN_ID,
+  COUNTER_WITH_SPACES_ID,
+  COUNTER_WITHOUT_SPACES_ID,
+} from '~/constants';
+
 useHead({
-  title: 'Ranobi',
+  title: APP_NAME,
 });
 
 function handleChangeMainText(evt) {
   // autosave
-  localStorage.setItem('autosave', evt.target.textContent ?? '')
+  setAutosave(evt.target.textContent ?? '');
 
   // change counters
-  const mainTextDiv = document.querySelector('#main_text');
-  const counterWithSpacesSpan = document.querySelector('#counter_with_spaces');
-  const counterWithoutSpacesSpan = document.querySelector('#counter_without_spaces');
+  const mainTextDiv = document.querySelector(`#${MAIN_TEXT_DIV_ID}`);
+  const counterWithSpacesSpan = document.querySelector(`#${COUNTER_WITH_SPACES_ID}`);
+  const counterWithoutSpacesSpan = document.querySelector(`#${COUNTER_WITHOUT_SPACES_ID}`);
 
   counterWithSpacesSpan.textContent = mainTextDiv.textContent.length;
   counterWithoutSpacesSpan.textContent = mainTextDiv.textContent.replaceAll(' ', '').length;
 }
 
 onMounted(() => {
-  const mainTextDiv = document.querySelector('#main_text');
+  const mainTextDiv = document.querySelector(`#${MAIN_TEXT_DIV_ID}`);
 
   // get autosave
-  mainTextDiv.textContent = localStorage.getItem('autosave') ?? '';
+  mainTextDiv.textContent = getAutosave();
 
   // get counters
 
-  const counterWithSpacesSpan = document.querySelector('#counter_with_spaces');
-  const counterWithoutSpacesSpan = document.querySelector('#counter_without_spaces');
+  const counterWithSpacesSpan = document.querySelector(`#${COUNTER_WITH_SPACES_ID}`);
+  const counterWithoutSpacesSpan = document.querySelector(`#${COUNTER_WITHOUT_SPACES_ID}`);
 
   counterWithSpacesSpan.textContent = mainTextDiv.textContent.length;
   counterWithoutSpacesSpan.textContent = mainTextDiv.textContent.replaceAll(' ', '').length;
 
   // upload
-  const uploadInput = document.querySelector('#upload_input');
+  const uploadInput = document.querySelector(`#${UPLOAD_INPUT_ID}`);
   
   uploadInput.addEventListener('change', handleFileSelection);
 
@@ -75,7 +83,7 @@ onMounted(() => {
   }
 
   // save file
-  const saveFileBtn = document.querySelector('#save_file_btn');
+  const saveFileBtn = document.querySelector(`#${SAVE_FILE_BTN_ID}`);
 
   saveFileBtn.addEventListener('click', handleSaveFileClick);
 
@@ -90,5 +98,4 @@ onMounted(() => {
     link.click();
   }
 })
-
 </script>
