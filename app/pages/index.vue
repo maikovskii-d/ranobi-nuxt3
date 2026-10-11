@@ -1,101 +1,107 @@
 <template>
   <Preloader />
   <div
-    :id="MAIN_TEXT_DIV_ID"
+    ref="mainTextDiv"
     class="p-2"
     contenteditable
     @input="handleChangeMainText"
-  >
-  </div>
+  ></div>
   <label class="border border-black">
     <span>Загрузить</span>
-    <input :id="UPLOAD_INPUT_ID" type="file" style="width: 0px" accept=".txt" />
+    <input ref="upload_input" type="file" style="width: 0px" accept=".txt" />
   </label>
-  <button :id="SAVE_FILE_BTN_ID" class="border border-black">
+  <button ref="save_file_btn" class="border border-black">
     Сохранить
   </button>
   <div class="fixed bottom-0">
     С пробелами - 
-    <span :id="COUNTER_WITH_SPACES_ID"></span>.
+    <span>{{ counterWithSpaces }}</span>.
     Без пробелов - 
-    <span :id="COUNTER_WITHOUT_SPACES_ID"></span>
+    <span>{{ counterWithoutSpaces }}</span>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {
   APP_NAME,
-  MAIN_TEXT_DIV_ID,
-  UPLOAD_INPUT_ID,
-  SAVE_FILE_BTN_ID,
-  COUNTER_WITH_SPACES_ID,
-  COUNTER_WITHOUT_SPACES_ID,
 } from '~/constants';
 
 useHead({
   title: APP_NAME,
 });
 
-function handleChangeMainText(evt) {
-  // autosave
-  setAutosave(evt.target.textContent ?? '');
+const mainTextDiv = useTemplateRef('mainTextDiv');
+const uploadInput = useTemplateRef('upload_input');
+const saveFileBtn = useTemplateRef('save_file_btn');
+const textVersion = ref(0);
 
-  // change counters
-  const mainTextDiv = document.querySelector(`#${MAIN_TEXT_DIV_ID}`);
-  const counterWithSpacesSpan = document.querySelector(`#${COUNTER_WITH_SPACES_ID}`);
-  const counterWithoutSpacesSpan = document.querySelector(`#${COUNTER_WITHOUT_SPACES_ID}`);
+const counterWithSpaces = computed(() => {
+  textVersion.value;
+  return (mainTextDiv.value?.textContent ?? '').length;
+});
+const counterWithoutSpaces = computed(() => {
+  textVersion.value;
+  return (mainTextDiv.value?.textContent ?? '').replace(/\s/g, '').length;
+});
 
-  counterWithSpacesSpan.textContent = mainTextDiv.textContent.length;
-  counterWithoutSpacesSpan.textContent = mainTextDiv.textContent.replaceAll(' ', '').length;
+function handleChangeMainText(evt: Event) {
+  const target = evt.target;
+
+  if (!(target instanceof HTMLElement)) return;
+
+  textVersion.value++;
+  setAutosave(target.textContent ?? '');
 }
 
 onMounted(() => {
-  const mainTextDiv = document.querySelector(`#${MAIN_TEXT_DIV_ID}`);
-
   // get autosave
-  mainTextDiv.textContent = getAutosave();
-
-  // get counters
-
-  const counterWithSpacesSpan = document.querySelector(`#${COUNTER_WITH_SPACES_ID}`);
-  const counterWithoutSpacesSpan = document.querySelector(`#${COUNTER_WITHOUT_SPACES_ID}`);
-
-  counterWithSpacesSpan.textContent = mainTextDiv.textContent.length;
-  counterWithoutSpacesSpan.textContent = mainTextDiv.textContent.replaceAll(' ', '').length;
+  if (mainTextDiv.value) {
+    mainTextDiv.value.textContent = getAutosave();
+  }
 
   // upload
-  const uploadInput = document.querySelector(`#${UPLOAD_INPUT_ID}`);
-  
-  uploadInput.addEventListener('change', handleFileSelection);
+  if (uploadInput.value) {
+    uploadInput.value.addEventListener('change', handleFileSelection);
 
-  function handleFileSelection(evt) {
-    const file = evt.target.files[0];
+    function handleFileSelection(evt: Event) {
+      const target = evt.target
 
-    if (file) {
-      const reader = new FileReader();
+      if (!(target instanceof HTMLInputElement) || !target.files) return;
 
-      reader.onload = () => {
-        mainTextDiv.textContent = reader.result;
-      };
+      const file = target.files[0];
 
-      reader.readAsText(file);
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          if (typeof reader.result === 'string') {
+            if (mainTextDiv.value) {
+              mainTextDiv.value.textContent = reader.result;
+            }
+
+            setAutosave(reader.result);
+          }
+        };
+
+        reader.readAsText(file);
+      }
     }
   }
 
   // save file
-  const saveFileBtn = document.querySelector(`#${SAVE_FILE_BTN_ID}`);
+  if (saveFileBtn.value) {
+    saveFileBtn.value.addEventListener('click', handleSaveFileClick);
 
-  saveFileBtn.addEventListener('click', handleSaveFileClick);
+    function handleSaveFileClick() {
+      const savingText = mainTextDiv.value?.textContent ?? '';
+      const savingTextBlob = new Blob([savingText]);
 
-  function handleSaveFileClick() {
-    const savingText = mainTextDiv.textContent;
-    const savingTextBlob = new Blob([savingText]);
+      const link = document.createElement('a');
 
-    const link = document.createElement('a');
-
-    link.href = URL.createObjectURL(savingTextBlob);
-    link.download = 'my_text';
-    link.click();
+      link.href = URL.createObjectURL(savingTextBlob);
+      link.download = 'my_text';
+      link.click();
+    }
   }
 })
 </script>
