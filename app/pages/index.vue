@@ -1,6 +1,7 @@
 <template>
   <Preloader />
   <input ref="uploadInputRef" type="file" style="width: 0px; height: 0px; position: absolute;" accept=".txt" />
+  <ThreeDotsBtn />
   <div class="w-full h-full absolute bg-white md:bg-violet-200 dark:bg-gray-900 md:dark:bg-gray-700">
     <div
       ref="mainTextDivRef"
