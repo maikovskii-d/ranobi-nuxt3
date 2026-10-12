@@ -1,18 +1,21 @@
 <template>
   <Preloader />
   <input ref="uploadInputRef" type="file" style="width: 0px; height: 0px; position: absolute;" accept=".txt" />
-  <div
-    ref="mainTextDivRef"
-    class="p-2"
-    contenteditable
-    @input="handleChangeMainText"
-  ></div>
-  <button class="border border-black" @click="uploadInput?.click()">
-    Загрузить
-  </button>
-  <button ref="save_file_btn" class="border border-black">
-    Сохранить
-  </button>
+  <div class="w-full h-full absolute bg-violet-200 dark:bg-gray-700">
+    <div
+      ref="mainTextDivRef"
+      class="p-2"
+      contenteditable
+      @input="handleChangeMainText"
+    ></div>
+    <button class="border border-black" @click="uploadInput?.click()">
+      Загрузить
+    </button>
+    <button ref="save_file_btn" class="border border-black">
+      Сохранить
+    </button>
+    <ThemeToggle />
+  </div>
   <div class="fixed bottom-0">
     С пробелами - 
     <span>{{ counter.withSpaces }}</span>.
