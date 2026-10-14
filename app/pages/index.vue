@@ -9,18 +9,9 @@
       contenteditable
       @input="handleChangeMainText"
     ></div>
-    <button class="border border-black" @click="uploadInput?.click()">
-      Загрузить
-    </button>
-    <button ref="save_file_btn" class="border border-black">
-      Сохранить
-    </button>
-    <ThemeToggle />
   </div>
   <div class="fixed bottom-0">
-    С пробелами - 
-    <span>{{ counter.withSpaces }}</span>.
-    Без пробелов - 
+    <span>{{ counter.withSpaces }}</span> /
     <span>{{ counter.withoutSpaces }}</span>
   </div>
 </template>
@@ -33,8 +24,6 @@ useHead({
 });
 
 const {
-  mainTextDiv,
-  uploadInput,
   counter,
   registerMainTextDiv,
   registerUploadInput,
@@ -45,7 +34,6 @@ const {
 
 const mainTextDivRef = shallowRef<HTMLDivElement | null>(null);
 const uploadInputRef = shallowRef<HTMLInputElement | null>(null);
-const saveFileBtn = useTemplateRef('save_file_btn');
 
 function handleChangeMainText(evt: Event) {
   if (!(evt.target instanceof HTMLElement)) return;
@@ -58,13 +46,5 @@ onMounted(() => {
   registerUploadInput(uploadInputRef.value);
   addUploadListener();
   mountAutosave();
-
-  if (saveFileBtn.value) {
-    saveFileBtn.value.addEventListener('click', handleSaveFileClick);
-
-    function handleSaveFileClick() {
-      saveTextAsFile(mainTextDiv.value?.textContent ?? '');
-    }
-  }
 })
 </script>
