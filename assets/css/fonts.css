@@ -1,36 +1,36 @@
 @font-face {
-  font-family: 'Alegreya';
-  src: url('/fonts/alegreya/variable/alegreya-cyrillic-wght-normal.woff2') format('woff2');
+  font-family: 'Inter';
+  src: url('/fonts/inter/variable/inter-cyrillic-wght-normal.woff2') format('woff2');
   font-style: normal;
   font-weight: 400 700;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Alegreya';
-  src: url('/fonts/alegreya/variable/alegreya-latin-wght-normal.woff2') format('woff2');
+  font-family: 'Inter';
+  src: url('/fonts/inter/variable/inter-latin-wght-normal.woff2') format('woff2');
   font-style: normal;
   font-weight: 400 700;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Alegreya';
-  src: url('/fonts/alegreya/variable/alegreya-cyrillic-wght-italic.woff2') format('woff2');
+  font-family: 'Inter';
+  src: url('/fonts/inter/variable/inter-cyrillic-wght-italic.woff2') format('woff2');
   font-style: italic;
   font-weight: 400 700;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Alegreya';
-  src: url('/fonts/alegreya/variable/alegreya-latin-wght-italic.woff2') format('woff2');
+  font-family: 'Inter';
+  src: url('/fonts/inter/variable/inter-latin-wght-italic.woff2') format('woff2');
   font-style: italic;
   font-weight: 400 700;
   font-display: swap;
 }
 
 body {
-  font-family: 'Alegreya', serif;
-  font-size: 20px;
+  font-family: 'Inter', serif;
+  font-size: 16px;
 }

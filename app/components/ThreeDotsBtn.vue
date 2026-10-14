@@ -7,16 +7,16 @@
     </button>
     <div v-if="isOpen" class="mt-3 bg-violet-200 md:bg-white dark:bg-gray-700 md:dark:bg-gray-900 w-[114px] rounded shadow-md p-1">
       <button class="mx-[6px] cursor-pointer" ref="save_file_btn">
-        <span class="text-sm dark:text-white">Сохранить</span>
+        <span class="text-xs dark:text-white">Сохранить</span>
       </button>
       <button class="mx-[6px] cursor-pointer" @click="uploadInput?.click">
-        <span class="text-sm dark:text-white">Загрузить</span>
+        <span class="text-xs dark:text-white">Загрузить</span>
       </button>
       <button class="mx-[6px] cursor-pointer" @click="isFullscreen = !isFullscreen; toggleFullscreen()">
-        <span class="text-sm dark:text-white">{{ isFullscreen ? 'В окне' : 'Полный экран' }}</span>
+        <span class="text-xs dark:text-white">{{ isFullscreen ? 'В окне' : 'Полный экран' }}</span>
       </button>
       <button class="mx-[6px] cursor-pointer" @click="toggleTheme">
-        <span class="text-sm dark:text-white">{{ colorMode.value === 'dark' ? 'Светлая тема' : 'Темная тема' }}</span>
+        <span class="text-xs dark:text-white">{{ colorMode.value === 'dark' ? 'Светлая тема' : 'Темная тема' }}</span>
       </button>
     </div>
   </div>
