@@ -51,7 +51,6 @@ watchEffect((onCleanup) => {
 })
 
 onMounted(() => {
-  console.log(saveFileBtnRef.value)
   if (saveFileBtnRef.value) {
     saveFileBtnRef.value.addEventListener('click', handleSaveFileClick);
 
