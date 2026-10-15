@@ -39,7 +39,7 @@ watchEffect((onCleanup) => {
     saveFileBtnRef.value.addEventListener('click', handleSaveFileClick);
 
     function handleSaveFileClick() {
-      saveTextAsFile(mainTextDiv.value?.textContent ?? '');
+      saveTextAsFile(mainTextDiv.value?.innerText ?? '');
     }
 
     const saveFileBtnRefValue = saveFileBtnRef.value;
@@ -47,16 +47,6 @@ watchEffect((onCleanup) => {
     onCleanup(() => {
       saveFileBtnRefValue.removeEventListener('click', handleSaveFileClick);
     });
-  }
-})
-
-onMounted(() => {
-  if (saveFileBtnRef.value) {
-    saveFileBtnRef.value.addEventListener('click', handleSaveFileClick);
-
-    function handleSaveFileClick() {
-      saveTextAsFile(mainTextDiv.value?.textContent ?? '');
-    }
   }
 })
 </script>

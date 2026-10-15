@@ -45,7 +45,7 @@ const uploadInputRef = shallowRef<HTMLInputElement | null>(null);
 function handleChangeMainText(evt: Event) {
   if (!(evt.target instanceof HTMLElement)) return;
 
-  changeMainText(evt.target.textContent ?? '');
+  changeMainText(evt.target.innerText ?? '');
 }
 
 onMounted(() => {

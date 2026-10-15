@@ -24,7 +24,7 @@ export function useTextEditor() {
         if (file) {
           readFileAsText(file, (result) => {
             if (mainTextDiv.value) {
-              mainTextDiv.value.textContent = result;
+              mainTextDiv.value.innerText = result;
             }
 
             setAutosave(result);
@@ -46,7 +46,7 @@ export function useTextEditor() {
 
   function mountAutosave() {
     if (mainTextDiv.value) {
-      mainTextDiv.value.textContent = getAutosave();
+      mainTextDiv.value.innerText = getAutosave();
     }
   }
 
