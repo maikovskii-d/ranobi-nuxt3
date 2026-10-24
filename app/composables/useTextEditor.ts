@@ -1,3 +1,5 @@
+import type { TextObject } from '~/types';
+
 const mainTextDiv = shallowRef<HTMLDivElement | null>(null);
 const uploadInput = shallowRef<HTMLInputElement | null>(null);
 
