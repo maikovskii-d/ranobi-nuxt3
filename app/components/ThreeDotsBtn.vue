@@ -23,6 +23,9 @@
 </template>
 
 <script setup lang="ts">
+import { saveJsonAsFile } from '~/utils/saveJsonAsFile';
+import type { TextObject } from '~/types';
+
 const { mainTextDiv, uploadInput } = useTextEditor();
 const saveFileBtnRef = useTemplateRef('save_file_btn');
 const colorMode = useColorMode();
@@ -39,7 +42,17 @@ watchEffect((onCleanup) => {
     saveFileBtnRef.value.addEventListener('click', handleSaveFileClick);
 
     function handleSaveFileClick() {
-      saveTextAsFile(mainTextDiv.value?.innerText ?? '');
+      const newTextObject: TextObject = {
+        version: 1,
+        algorithm: "AES-GCM",
+        kdf: "PBKDF2",
+        kdfHash: "SHA-256",
+        iterations: 600000,
+        salt: "BASE64_SALT",
+        iv: "BASE64_IV",
+        ciphertext: mainTextDiv.value?.innerText ?? '',
+      }
+      saveJsonAsFile(newTextObject);
     }
 
     const saveFileBtnRefValue = saveFileBtnRef.value;

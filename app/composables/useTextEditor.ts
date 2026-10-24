@@ -23,11 +23,13 @@ export function useTextEditor() {
 
         if (file) {
           readFileAsText(file, (result) => {
+            const textObject: TextObject = JSON.parse(result);
+
             if (mainTextDiv.value) {
-              mainTextDiv.value.innerText = result;
+              mainTextDiv.value.innerText = textObject.ciphertext;
             }
 
-            setAutosave(result);
+            setAutosave(textObject);
           });
         }
       }
@@ -46,13 +48,25 @@ export function useTextEditor() {
 
   function mountAutosave() {
     if (mainTextDiv.value) {
-      mainTextDiv.value.innerText = getAutosave();
+      mainTextDiv.value.innerText = getAutosave()?.ciphertext ?? '';
     }
   }
 
   function changeMainText (text: string) {
     textVersion.value++;
-    setAutosave(text);
+
+    const newTextObject: TextObject = {
+      version: 1,
+      algorithm: "AES-GCM",
+      kdf: "PBKDF2",
+      kdfHash: "SHA-256",
+      iterations: 600000,
+      salt: "BASE64_SALT",
+      iv: "BASE64_IV",
+      ciphertext: text,
+    };
+    
+    setAutosave(newTextObject);
   }
 
   return {

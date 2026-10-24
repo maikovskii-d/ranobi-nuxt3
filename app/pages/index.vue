@@ -1,6 +1,6 @@
 <template>
   <Preloader />
-  <input ref="uploadInputRef" type="file" style="width: 0px; height: 0px; position: absolute;" accept=".txt" />
+  <input ref="uploadInputRef" type="file" style="width: 0px; height: 0px; position: absolute;" accept=".json" />
   <ThreeDotsBtn />
   <div class="w-full h-screen absolute bg-white md:bg-violet-200 dark:bg-gray-900 md:dark:bg-gray-700 flex justify-center">
     <div class="min-w-0 px-[15px] md:px-[44px] pt-11 md:py-[36px] w-full md:w-[600px] md:my-[45px] bg-white dark:bg-gray-900 dark:text-white md:shadow-md">
