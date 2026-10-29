@@ -31,7 +31,7 @@ export function useTextEditor() {
               mainTextDiv.value.innerText = textObject.ciphertext;
             }
 
-            setAutosave(textObject);
+            setAutosave(textObject.ciphertext);
           });
         }
       }
@@ -50,25 +50,14 @@ export function useTextEditor() {
 
   function mountAutosave() {
     if (mainTextDiv.value) {
-      mainTextDiv.value.innerText = getAutosave()?.ciphertext ?? '';
+      mainTextDiv.value.innerText = getAutosave() ?? '';
     }
   }
 
   function changeMainText (text: string) {
     textVersion.value++;
-
-    const newTextObject: TextObject = {
-      version: 1,
-      algorithm: "AES-GCM",
-      kdf: "PBKDF2",
-      kdfHash: "SHA-256",
-      iterations: 600000,
-      salt: "BASE64_SALT",
-      iv: "BASE64_IV",
-      ciphertext: text,
-    };
     
-    setAutosave(newTextObject);
+    setAutosave(text);
   }
 
   return {
