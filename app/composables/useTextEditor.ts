@@ -1,4 +1,5 @@
 import type { TextObject } from '~/types';
+import { CRYPT_PASSWORD, CRYPT_KDF } from '~/constants';
 
 const mainTextDiv = shallowRef<HTMLDivElement | null>(null);
 const uploadInput = shallowRef<HTMLInputElement | null>(null);
@@ -24,14 +25,19 @@ export function useTextEditor() {
         const file = evt.target.files[0];
 
         if (file) {
-          readFileAsText(file, (result) => {
+          readFileAsText(file, async (result) => {
             const textObject: TextObject = JSON.parse(result);
 
+            const keyMaterial = await passwordToKeyMaterial(CRYPT_PASSWORD, CRYPT_KDF);
+            const derivedKey = await deriveKey(keyMaterial, textObject);
+
+            const text = await decrypt(derivedKey, textObject);
+
             if (mainTextDiv.value) {
-              mainTextDiv.value.innerText = textObject.ciphertext;
+              mainTextDiv.value.innerText = text;
             }
 
-            setAutosave(textObject.ciphertext);
+            setAutosave(text);
           });
         }
       }

@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { saveJsonAsFile } from '~/utils/saveJsonAsFile';
-import type { TextObject } from '~/types';
+import { CRYPT_KDF, CRYPT_PASSWORD } from '~/constants';
 
 const { mainTextDiv, uploadInput } = useTextEditor();
 const saveFileBtnRef = useTemplateRef('save_file_btn');
@@ -41,18 +41,17 @@ watchEffect((onCleanup) => {
   if (saveFileBtnRef.value) {
     saveFileBtnRef.value.addEventListener('click', handleSaveFileClick);
 
-    function handleSaveFileClick() {
-      const newTextObject: TextObject = {
-        version: 1,
-        algorithm: "AES-GCM",
-        kdf: "PBKDF2",
-        kdfHash: "SHA-256",
-        iterations: 600000,
-        salt: "BASE64_SALT",
-        iv: "BASE64_IV",
-        ciphertext: mainTextDiv.value?.innerText ?? '',
-      }
-      saveJsonAsFile(newTextObject);
+    async function handleSaveFileClick() {
+      const textObjectInfo = createTextObjectInfo();
+
+      const keyMaterial = await passwordToKeyMaterial(CRYPT_PASSWORD, CRYPT_KDF);
+      const derivedKey = await deriveKey(keyMaterial, textObjectInfo);
+
+      const text = mainTextDiv.value?.innerText ?? '';
+
+      const textObject = await encrypt(derivedKey, text, textObjectInfo);
+
+      saveJsonAsFile(textObject, toBase64(generateSalt().buffer));
     }
 
     const saveFileBtnRefValue = saveFileBtnRef.value;

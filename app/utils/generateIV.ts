@@ -1,0 +1,1 @@
+export const generateIV = () => crypto.getRandomValues(new Uint8Array(12));
