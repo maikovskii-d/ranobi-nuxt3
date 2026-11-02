@@ -51,7 +51,7 @@ watchEffect((onCleanup) => {
 
       const textObject = await encrypt(derivedKey, text, textObjectInfo);
 
-      saveJsonAsFile(textObject, toBase64(generateSalt().buffer));
+      saveJsonAsFile(textObject, toBase64(generateSalt().buffer) + '.json');
     }
 
     const saveFileBtnRefValue = saveFileBtnRef.value;
