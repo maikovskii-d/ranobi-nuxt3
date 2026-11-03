@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { saveJsonAsFile } from '~/utils/saveJsonAsFile';
-import { CRYPT_KDF, CRYPT_PASSWORD } from '~/constants';
+import { CRYPT_KDF } from '~/constants';
 
 const { mainTextDiv, uploadInput } = useTextEditor();
 const saveFileBtnRef = useTemplateRef('save_file_btn');
@@ -38,13 +38,15 @@ function toggleTheme() {
 }
 
 watchEffect((onCleanup) => {
+  const config = useRuntimeConfig();
+  
   if (saveFileBtnRef.value) {
     saveFileBtnRef.value.addEventListener('click', handleSaveFileClick);
 
     async function handleSaveFileClick() {
       const textObjectInfo = createTextObjectInfo();
 
-      const keyMaterial = await passwordToKeyMaterial(CRYPT_PASSWORD, CRYPT_KDF);
+      const keyMaterial = await passwordToKeyMaterial(config.public.password, CRYPT_KDF);
       const derivedKey = await deriveKey(keyMaterial, textObjectInfo);
 
       const text = mainTextDiv.value?.innerText ?? '';

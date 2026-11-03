@@ -9,4 +9,4 @@ export const CRYPT_KDF_HASH = 'SHA-256';
 export const CRYPT_ITERATIONS = 100_000;
 export const DEFAULT_AES_GCM_LENGTH = 256;
 
-export const CRYPT_PASSWORD = String(import.meta.env.PASSWORD ?? '');
+export const CRYPT_PASSWORD = '';

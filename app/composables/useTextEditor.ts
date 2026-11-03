@@ -1,5 +1,5 @@
 import type { TextObject } from '~/types';
-import { CRYPT_PASSWORD, CRYPT_KDF } from '~/constants';
+import { CRYPT_KDF } from '~/constants';
 
 const mainTextDiv = shallowRef<HTMLDivElement | null>(null);
 const uploadInput = shallowRef<HTMLInputElement | null>(null);
@@ -16,6 +16,8 @@ export function useTextEditor() {
   }
 
   function addUploadListener() {
+    const config = useRuntimeConfig();
+    
     if (uploadInput.value) {
       uploadInput.value.addEventListener('change', handleFileSelection);
 
@@ -28,7 +30,7 @@ export function useTextEditor() {
           readFileAsText(file, async (result) => {
             const textObject: TextObject = JSON.parse(result);
 
-            const keyMaterial = await passwordToKeyMaterial(CRYPT_PASSWORD, CRYPT_KDF);
+            const keyMaterial = await passwordToKeyMaterial(config.public.password, CRYPT_KDF);
             const derivedKey = await deriveKey(keyMaterial, textObject);
 
             const text = await decrypt(derivedKey, textObject);
